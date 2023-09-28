@@ -9,6 +9,9 @@ mysql-connector-python = "*"
 django = "*"
 mysqlclient = "*"
 requests = "*"
+django-crispy-forms = "*"
+django-allauth = "*"
+six = "*"
 
 [dev-packages]
 
