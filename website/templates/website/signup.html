@@ -1,0 +1,55 @@
+{%extends 'base.html'%}
+{%block title%}Sign Up{%endblock%}
+{%block content%}
+<div class="d-flex flex-column align-items-center">
+   <div class="mt-5"><h1>Sign Up</h1>
+   <br/>
+   </div>
+   <form method='post' action='.'>
+      {%csrf_token%}
+	  {%if form.errors%}
+	    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+	     {%for field in form%}
+		    {%if field.errors%}
+			   {{field.errors}}
+			{%endif%}
+		 {%endfor%}
+		 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+		</div> 
+	  {%endif%}
+      <div class="mb-3">
+         {{form.email}}
+      </div>
+	  <div class="mb-3">
+         {{form.username}}
+      </div>
+      <div class="mb-3">
+         {{form.password1}}
+      </div>
+	  <div class="mb-3">
+         {{form.password2}}
+      </div>
+	  <div class="d-flex justify-content-center">   
+		 <div class="mb-3 form-check ">
+            {{form.check}}
+		    <label class="form-check-label" for="chk">accept <a href="#">conditions</a></label>
+	     </div>
+	  </div>	 
+	  <div class="d-flex justify-content-center">	  
+         <button type="submit" class="btn btn-primary" id="btn" disabled='true'>Submit</button>
+	     <script>
+            function func(){
+		       var chk=document.getElementById('chk')
+			   var btn=document.getElementById('btn')
+			   if(chk.checked){
+			      btn.removeAttribute('disabled');
+			   }
+			   else{
+			      btn.disabled='true';
+			   }
+		    }
+         </script>
+	  </div>
+   </form>
+</div>
+{%endblock%}
