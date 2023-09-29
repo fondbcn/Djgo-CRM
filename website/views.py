@@ -1,4 +1,4 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect,get_object_or_404
 from django.contrib.auth import login,logout,authenticate,get_user_model
 from django.contrib import messages
 from .forms import SignupForm
@@ -8,8 +8,10 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes, force_str
 from django.core.mail import EmailMessage
+from .models import Item
 
 def home(request):
+    items=Item.objects.all()
     if request.method=="POST":
         user_name=request.POST["username"]
         pass_word=request.POST["password"]
@@ -26,7 +28,7 @@ def home(request):
             messages.success(request,"Please enter valid infos!")
             return redirect('website:home')
     else:
-        return render(request,'website/home.html',{})
+        return render(request,'website/home.html',{'items':items})
 
 def logout_r(request):
     logout(request)
@@ -79,3 +81,11 @@ def activate(request,uidb64,token):
     else:
         messages.success(request,'Invalid activation')
     return redirect('website:home')
+    
+def detail(request,pk):
+    #if request.user.is_authenticated:
+        #...
+    item=get_object_or_404(Item,pk=pk)
+    return render(request,'website/item_detail.html',{
+       'item':item,
+    })
