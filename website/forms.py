@@ -1,6 +1,7 @@
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django import forms
+from .models import Item
 
 class SignupForm(UserCreationForm):
     class Meta:
@@ -27,3 +28,26 @@ class SignupForm(UserCreationForm):
         'onclick':'func()',
         'class':'form-check-input',
         }))
+        
+html_class='form-control'
+class NewItemForm(forms.ModelForm):
+    class Meta:
+        model=Item
+        fields=('first_name','last_name','address','city','state','email','zipcode',)
+        widgets={
+           'first_name':forms.TextInput(attrs={
+              'class':html_class}),
+           'last_name':forms.TextInput(attrs={
+              'class':html_class}),
+           'address':forms.TextInput(attrs={
+              'class':html_class}),
+           'city':forms.TextInput(attrs={
+              'class':html_class}),
+           'state':forms.TextInput(attrs={
+              'class':html_class,}),
+           'email':forms.TextInput(attrs={
+              'class':html_class,}),
+           'zipcode':forms.TextInput(attrs={
+              'class':html_class,}),
+           
+        }

@@ -19,5 +19,12 @@
       </div>
       {%endif%}
    </div>
+   {%if request.user.is_superuser %}
+      <div class="d-flex justify-content-center pt-3">
+         <a href="{%url 'website:delete' item.id%}" class="btn btn-danger m-3">Delete</a>
+         <a href="{%url 'website:edit' item.id%}" class="btn btn-primary m-3">&nbspEdit&nbsp</a>
+      </div>
+   {%endif%}  
+   <a href="{%url 'website:home'%}" class="btn btn-secondary mt-3">Back</a>
 </div>
 {%endblock%}

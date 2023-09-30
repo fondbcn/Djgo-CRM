@@ -1,0 +1,16 @@
+{%extends 'base.html'%}
+{%block title%}New Item{%endblock%}
+{%block content%}
+<div class="d-flex flex-column align-items-center pt-3">
+   <form method="POST" action="{%url 'website:add'%}">
+      {%csrf_token%}
+      <div class="mb-3">
+	     {{form.as_p}}
+	  </div>
+      <br>
+      <div class="d-flex justify-content-center">   
+		 <button type="submit" class="btn btn-secondary">add</button>
+	  </div>
+   </form>
+</div>
+{%endblock%}

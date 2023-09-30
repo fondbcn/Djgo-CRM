@@ -32,11 +32,6 @@
             <tr>
                <th scope="col"></th>
                <th scope="col">Name</th>
-               <!--<th scope="col">Address</th>
-               <th scope="col">City</th>
-               <th scope="col">State</th>
-               <th scope="col">Email</th>
-               <th scope="col">ZIP</th>-->
                <th scope="col">Created at</th>
             </tr>
          </thead>
@@ -45,17 +40,13 @@
                <tr onclick="window.location.href='{%url 'website:detail' item.id %}';">
                   <th scope="row">{{item.id}}</th>
                   <td>{{item.first_name}}  {{item.last_name}}</td>
-                  <!--<td>{{item.address}}</td>
-                  <td>{{item.city}}</td>
-                  <td>{{item.state}}</td>
-                  <td>{{item.email}}</td>
-                  <td>{{item.zipcode}}</td>-->
                   <td>{{item.created_at}}</td>
                </tr>
             {%endfor%}{%endif%}
          </tbody>
       </table>
    </div>
+   <a href="{%url 'website:add'%}" class="btn btn-primary mt-3">Add one</a>
    {%endif%}
 </div>
 {%endblock%}

@@ -1,7 +1,7 @@
 from django.shortcuts import render,redirect,get_object_or_404
 from django.contrib.auth import login,logout,authenticate,get_user_model
 from django.contrib import messages
-from .forms import SignupForm
+from .forms import SignupForm,NewItemForm
 from .token import acc_activ_token
 from django.template.loader import render_to_string
 from django.contrib.sites.shortcuts import get_current_site
@@ -9,6 +9,8 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes, force_str
 from django.core.mail import EmailMessage
 from .models import Item
+from django.contrib.auth.decorators import login_required
+from django.urls import reverse
 
 def home(request):
     items=Item.objects.all()
@@ -30,6 +32,7 @@ def home(request):
     else:
         return render(request,'website/home.html',{'items':items})
 
+@login_required
 def logout_r(request):
     logout(request)
     messages.success(request,"Trig essed")
@@ -81,11 +84,43 @@ def activate(request,uidb64,token):
     else:
         messages.success(request,'Invalid activation')
     return redirect('website:home')
-    
+
+@login_required    
 def detail(request,pk):
-    #if request.user.is_authenticated:
-        #...
+    if request.user.is_authenticated:
+        item=get_object_or_404(Item,pk=pk)
+        return render(request,'website/item_detail.html',{
+           'item':item,
+        })
+    else:
+        return redirect('website:home')
+
+@login_required
+def delete(request,pk):
     item=get_object_or_404(Item,pk=pk)
-    return render(request,'website/item_detail.html',{
-       'item':item,
-    })
+    item.delete()
+    return redirect('website:home')
+
+@login_required        
+def add(request):
+    if request.method=="POST":
+        form=NewItemForm(request.POST)
+        if form.is_valid():
+            n_item=form.save()
+            url=reverse('website:detail',args=[n_item.id])
+        return redirect(url)
+    else:    
+        form=NewItemForm()
+    return render(request,'website/form.html',{'form':form})
+    
+@login_required        
+def edit(request,pk):
+    item=get_object_or_404(Item,pk=pk)
+    if request.method == "POST":
+        form = NewItemForm(request.POST, instance=item)
+        if form.is_valid():
+            form.save()
+            return redirect('website:detail',pk=pk)
+    else:
+        form = NewItemForm(instance=item)
+    return render(request,'website/edit.html',{'form':form})
